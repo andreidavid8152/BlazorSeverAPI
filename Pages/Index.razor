@@ -1,0 +1,43 @@
+﻿@page "/"
+@using BlazorSeverAPI.Models
+@inject HttpClient Http
+
+<h1>CONSUMO DE API</h1>
+
+@if (datos != null)
+{
+    <ul>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Codigo</th>
+                    <th>NombreEmisor</th>
+                    <th>Ruc</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in datos)
+                {
+                    <tr>
+                        <td>@item.Codigo</td>
+                        <td>@item.NombreEmisor</td>
+                        <td>@item.Ruc</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </ul>
+}
+else
+{
+    <p>Cargando datos...</p>
+}
+
+@code {
+    private List<Emisor> datos;
+
+    protected override async Task OnInitializedAsync()
+    {
+        datos = await Http.GetFromJsonAsync<List<Emisor>>("Varios/GetEmisor");
+    }
+}
